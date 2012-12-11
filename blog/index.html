@@ -1,0 +1,18 @@
+---
+layout: default
+header: Blog
+---
+<div>
+&nbsp;
+</div>
+{% for post in site.posts %}
+    <div>
+        <div class="small" style="float: left; text-align: right; width: 80px;">
+            {{ post.date | date: "%b %d, %Y" }}
+        </div>
+        <div style="float:left; width: 388px; margin-left: 12px;">
+            <a href="{{ post.url }}">{{ post.title }}</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+{% endfor %}

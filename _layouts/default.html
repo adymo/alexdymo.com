@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic&amp;subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/syntax.css" media="screen" rel="stylesheet" type="text/css" />
+    <title>
+        {% if page.title %}
+             {{ page.title }} -
+        {% endif %}
+        {% if page.header %}
+             {{ page.header }} -
+        {% endif %}
+        Alexander Dymo
+    </title>
+    {% if page.style %}
+        <style type="text/css">
+            {{ page.style }}
+        </style>
+    {% endif %}
+    <!-- : } </style> FIXME: hack to fix kate html highlighting -->
+</head>
+<body>
+    <div class="wrap">
+        <div class="header">
+            <div class="header-navigation">
+                <table width="100%">
+                <tbody><tr>
+                    <td>
+                        <a class="header-link small-caps {% if page.header == "Home" %} current-header-link {% endif %}" href="/">
+                            Home
+                        </a>
+                    </td>
+                    <td style="text-align: center;">
+                        <a class="header-link small-caps {% if page.header == "Blog" %} current-header-link {% endif %}" href="/blog">
+                            Blog
+                        </a>
+                    </td>
+                    <td style="text-align: right;">
+                        <a class="header-link small-caps {% if page.header == "Resume" %} current-header-link {% endif %}" href="/resume">
+                            Resume
+                        </a>
+                    </td>
+                </tr></tbody>
+                </table>
+            </div>
+            <div class="header-text">
+                <a class="clickable-header" href="/">Alexander Dymo</a>
+                {% if page.header %}
+                     &ndash;&#8250;
+                     {% if page.title and page.header == "Blog" %}<a class="clickable-header" href="/blog">{% endif %}
+                     {{ page.header }}
+                     {% if page.title and page.header == "Blog" %}</a>{% endif %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="content">
+            {% if page.title and page.header == "Blog" %}
+                <div class="small-caps deemphasized" style="margin: 24px 0 0 0">
+                    <a href="/blog">&laquo; See all posts</a>
+                </div>
+            {% endif %}
+            {% if page.title %}
+                <h1>{{ page.title }}</h1>
+            {% endif %}
+            {% if page.title and page.header == "Blog" %}
+                <div class="small deemphasized" style="margin: -24px 0 24px 0">
+                    Posted by Alexander Dymo on {{ page.date | date: "%B %d, %Y" }}
+                </div>
+            {% endif %}
+            {{ content }}
+
+            <table width="100%" class="deemphasized small">
+            <tbody>
+                {% if page.next %}
+                    <tr>
+                        <td class="small-caps prev-next-post-column">
+                            Next:
+                        </td>
+                        <td>
+                            <a href="{{ page.next.url }}">{{ page.next.title }}</a>
+                        </td>
+                    </tr>
+                {% endif %}
+                {% if page.previous %}
+                    <tr>
+                        <td class="small-caps prev-next-post-column">
+                            Previous:
+                        </td>
+                        <td>
+                            <a href="{{ page.previous.url }}">{{ page.previous.title }}</a>
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+            </table>
+        </div>
+        <div class="sidebar">
+            <div style="margin-top: 24px;" class="small-caps">About Me</div>
+            <div style="padding: 6px 0 6px 0; margin:0;">
+                <img src="/face.png" width="180px"/>
+            </div>
+            <p class="opening small">
+            Entrepreneur, open source developer, passionate about programming and engineering. Hardcore Linuxoid.
+            </p>
+            <p class="small">
+                Contact me by email:<br/>
+                <a href="mailto:alex@alexdymo.com">alex@alexdymo.com</a>
+            </p>
+            <p class="small">
+                Connect with me on:<br/>
+                <a href="http://ua.linkedin.com/in/adymo" style="" target="_blank">
+                    <img src="http://www.linkedin.com/img/webpromo/btn_in_20x15.png" width="20" height="15" style="vertical-align:middle">LinkedIn
+                </a>
+            </p>
+        </div>
+        <div class="clear"></div>
+
+        <div class="footer small deemphasized">
+            Copyright &copy; 2005-2012 Alexander Dymo
+        </div>
+    </div>
+</body>
+</html>
