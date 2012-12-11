@@ -1,0 +1,85 @@
+---
+layout: default
+title: "KDE 4.2 on EeePC Mini Review"
+header: Blog
+---
+
+<p>
+    I was going to continue my series of KDE 4.2 reviews, but two weeks ago I've installed KDE 4.2 on my EeePC and couldn't wait any longer to share my experience with that.
+</p>
+<p>
+I've been a happy owner of an EeePC 901 with 20G flash drive, 1G RAM and Linux preinstalled since September 2008. All I can say is that it's a best laptop I ever had. I knew EeePC will be useful for me, but I didn't know it will be THAT useful. I take it with me to the university for lectures and labs, I use it to surf the internet, work and make skype calls when I'm not at home. And yeah, I even take it with me when I go out with my friends :)
+</p>
+<p>
+My 901 came with Xandros and heavily customized KDE3. It was certainly ok, but I wanted the real operating system and after a short research on the available options, I installed Ubuntu Eee which really was Ubuntu 8.04 customized for EeePC. The current version of this distribution is called <a href="http://www.geteasypeasy.com/" target="_blank">Easy Peasy</a> 1.0 and contains packages from Ubuntu 8.10 Intrepid.
+</p>
+<p>
+Being Ubuntu, it of course came with GNOME and I was fine with that for 6 months until KDE 4.2 was released. I can certainly recommend installing Easy Peasy as everything worked out of the box - suspend to RAM, wifi, bluetooth and so on. The only thing that didn't work out of the box was my 3G Sony Ericsson MD300 modem. It was recognized as USB flash drive, so I had to install this udev rule to make it work as a modem:
+</p>
+{% highlight bash %}
+ACTION!="add", GOTO="3G_End"
+SUBSYSTEM=="usb", ATTRS{idProduct}=="d0cf", ATTRS{idVendor}=="0fce", \
+    RUN+="/bin/sh -c 'echo 3 > /sys/%p/bConfigurationValue'"
+LABEL="3G_End"
+{% endhighlight %}
+<p>
+When KDE 4.2 came out, I realized that I simply have to install the best Linux desktop (which is KDE 4.2) onto the best laptop (which is EeePC) :) I've added
+</p>
+{% highlight bash %}
+deb http://ppa.launchpad.net/kubuntu-experimental/ubuntu intrepid main
+{% endhighlight %}
+</p>
+<p>
+to /etc/apt/sources.list and ran
+</p>
+{% highlight bash %}
+apt-get update && apt-get install kubuntu-desktop
+{% endhighlight %}
+<p>
+This almost worked. Almost because my EeePC has 4G drive with the system partition and it had too little space to handle the update. I had a choice either to remove OpenOffice and GIMP or just uninstall GNOME before installing KDE. I chose the later and everything ran fine. After X restart I got the shiny new KDE 4.2 desktop.
+</p>
+{% image_tag KDE 4.2 on EeePC, /blog/images/kde4_on_eeepc.jpg %}
+<p>
+Hardware continued to work flawlessly with KDE 4.2 which was not a surprise because the underlying system was still good old Intrepid. But you may rather want to hear how KDE 4.2 worked with the hardware ;) In short, KDE 4.2 flied!
+</p>
+<p>
+Before installation I was worried about memory consumption, so I measured it right after installation. This is what "free" command shows when running only KDE desktop and Konsole:
+</p>
+{% highlight bash %}
+             total       used       free     shared    buffers     cached
+Mem:          1001        468        533          0         12        178
+-/+ buffers/cache:        276        724
+Swap:         1246          0       1246
+{% endhighlight%}
+<p>
+As you can see, the whole KDE desktop + Konsole application takes only <b>280 Megabytes RAM</b>! I think this is outstanding result for a modern desktop released in 2009.
+</p>
+<p>
+Even if you think 280M is too much, there's something you can do. Kubuntu has four autostarted programs written in Python - the printer applet, update notifier, bluetooth daemon and guidance (the power saver application). Those take roughly 95M in RAM. You can use the KPowerSave from KDE3, turn off update notifications and save more memory. If you do that, then the most recent Linux operating system with KDE 4.2 desktop will take exactly as much RAM as 7 year old Windows XP - roughly 180-200M.
+</p>
+<p>
+Integrated Intel graphics doesn't cause any troubles as well. More, I turned on Desktop Effects and, surprise! They worked. You may know from my previous posts that my definition of "works" is pretty severe: I like when UI doesn't disturb me. Desktop Effects aren't as smooth as for example animations on MacOS on MacBook's, but they don't disturb either. I can work with them. More, with "intel" driver and compositing enabled, Firefox doesn't show the scrolling problem that forces me to avoid effects on my desktop computer with either ATI or NVidia cards.
+</p>
+<p>
+In general, the performance of KDE applications is comparable to the regular computer (unless the application does CPU intensive work of course). Because the 901 model has SSD, the startup time of both operating system and individual applications is impressive. For example, I have a feeling that Dolphin starts faster on EeePC than on my desktop computer :)
+</p>
+<p>
+In short, the KDE experience on EeePC is definitely enjoyable. Here are several little things I discovered that will make your experience even better:
+</p>
+<ul>
+    <li>
+        set up your Panel to "Windows Can Cover" mode - 600px of vertical space on the screen is too small to waste it with the panel
+    </li>
+    <li>
+        use Quartz or BII window decoration which have tiny window border sizes and narrow window title bars, they won't look as good as Oxygen, but you will not waste the precious 600px for window decorations;
+    </li>
+    <li>
+        remove KNetworkManager and install GNOME Network Manager Applet, it turned to be more stable for me (especially when using WPA encryption);
+    </li>
+    <li>
+        if you use KDM, make sure to fix the background for your 1024x600 screen resolution, get the fix <a target="_blank" href="http://launchpadlibrarian.net/18295273/oxygen.xml.patch">here</a> or see the whole discussion <a target="_blank" href="https://bugs.launchpad.net/ubuntu/+source/kdebase-workspace/+bug/259181">here</a>
+    </li>
+</ul>
+<p>
+I highly recommend EeePC and highly encourage you to install KDE 4.2 onto it. With the newest KDE desktop on board EeePC becomes the laptop you can impress people with. Take it with you anywhere you go and show off KDE, Plasma and Desktop Effects to people. I don't know a better way to attract more users to KDE and Linux at this time!
+</p>
