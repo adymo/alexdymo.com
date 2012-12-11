@@ -96,6 +96,22 @@ table td, table th {
     padding: 0;
 }
 
+table.post-table {
+    margin-top: -1px;   /* to compensate top border */
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+table.post-table th {
+    height: 45px; /* =2*24 - 2 (compensate th border) - 1 (hack: comensate table bottom border) */
+    border-bottom: 2px solid black;
+
+    text-align: left;
+    vertical-align: top;
+}
+table td.number, table th.number {
+    text-align: right;
+}
+
 .clear {
     clear: both;
 }

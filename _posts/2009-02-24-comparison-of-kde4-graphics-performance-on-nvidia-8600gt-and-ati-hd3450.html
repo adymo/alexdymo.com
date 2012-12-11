@@ -1,0 +1,139 @@
+---
+layout: default
+title: "Comparison of KDE4 Graphics Performance on nVidia&nbsp;8600GT and ATI&nbsp;HD3450"
+header: Blog
+---
+
+<p>
+Five months ago I wrote a <a href="/blog/2008/10/kde4-performance-on-nvidia-8600gt-problem-solved-by-bying-ati.html">post</a> about inadequate graphics performance of KDE4 and Qt4 applications on nVidia cards using the proprietary nVidia driver.
+</p>
+<p>
+I was unhappy with the nVidia&nbsp;8600GT performance and bought el cheapo ATI&nbsp;HD3450 card and was happy with how well it worked with KDE. But after I posted my <a href="/blog/2009/01/kde-4-2-review-from-inside-out-part-1.html">KDE4 review</a> I got several comments from people saying that nVidia fixed their driver. So I became curious and took my old 8600GT and tried it.
+</p>
+<p>
+In short, <b>the performance has been indeed improved</b>. But... I felt something is still wrong. In particular, text rendering was not fast enough. Konsole suffered from this the most. The problem was also visible in Kate (see <a target="_blank" href="http://bugs.kde.org/show_bug.cgi?id=171099">my bugreport with callgrind profile if you're curious</a>).
+</p>
+<p>
+I decided to isolate the problematic code and try it with different drivers and cards to see what's going on. I wrote a simple program which renders one long line (16000 chars) on the screen several times and compared the rendering time 
+<a href="#" onclick="element = document.getElementById('code_example'); if (element.style.display == 'none') {element.style.display=''} else {element.style.display = 'none'}; return false">(see the code)</a>.
+</p>
+
+<div id="code_example" style="display: none;">
+{% highlight cpp %}
+#include <QApplication>
+#include <QTextLine>
+#include <QPainter>
+#include <QWidget>
+#include <QFont>
+#include <QTime>
+
+class MyWidget: public QWidget {
+public:
+   MyWidget(): QWidget() {
+      m_text = QString("foo bar zee moo ").repeated(1000);
+      m_layout = new QTextLayout(m_text);
+      m_layout->setFont(QFont("Courier New", 12));
+      m_layout->beginLayout();
+      QTextLine line = m_layout->createLine();
+      line.setLineWidth(m_text.length());
+      m_layout->endLayout();
+   }
+protected:
+   void paintEvent(QPaintEvent *ev) {
+      QPainter p(this);
+      QTime t;
+      t.start();
+      for (int i = 0; i < 100 ++i)
+         draw(&p, QPoint(0, 0));
+      p.drawText(QPoint(0,50), QString("%1").arg(t.elapsed()));
+   }
+private:
+   QString m_text;
+   QTextLayout *m_layout;
+};
+int main(int argc, char **argv) {
+   QApplication app(argc, argv);
+   QWidget *w = new MyWidget();
+   w->show();
+   return app.exec();
+}
+{% endhighlight %}
+</div>
+
+<p>
+I ran it on my desktop with ATI and nVidia cards and also on my EeePC. I have Qt 4.5 on the desktop and was able to try the new "Raster" graphics system in Qt which basically does all the drawing bypassing X11. Rumors are the "raster" system is faster.
+</p>
+<p>
+Here are the numbers I got (smaller is better):
+</p>
+<table class="post-table" width="100%">
+<thead>
+    <tr>
+        <th>Video Card</th>
+        <th>Driver</th>
+        <th class="number">X11</th>
+        <th class="number">Raster</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td rowspan="2" style="font-weight: bold; vertical-align: top;">ATI Radeon HD3450</td>
+        <td>fglrx 9.1</td>
+        <td class="number">918</td>
+        <td class="number">117</td>
+    </tr>
+    <tr>
+        <td>radeonhd</td>
+        <td class="number">768</td>
+        <td class="number">112</td>
+    </tr>
+    <tr>
+        <td rowspan="3" style="font-weight: bold; vertical-align: top;">nVidia GeForce 8600GT</td>
+        <td>nvidia 180.29</td>
+        <td class="number">1571</td>
+        <td class="number">113</td>
+    </tr>
+    <tr>
+        <td>nv</td>
+        <td class="number">895</td>
+        <td class="number">114</td>
+    </tr>
+    <tr>
+        <td>nouveau</td>
+        <td class="number">1699</td>
+        <td class="number">111</td>
+    </tr>
+    <tr>
+        <td style="font-weight: bold; vertical-align:top">Intel GMA 950 on EeePC</td>
+        <td>intel</td>
+        <td class="number">1029</td>
+        <td class="number">N/A</td>
+    </tr>
+</tbody>
+</table>
+
+<p>
+Immediate conclusions from that comparison are:
+</p>
+<ul>
+    <li>New raster graphics system from Qt 4.5 is <b>10x faster</b> then usual Qt rendering code</li>
+    <li>Proprietary nVidia driver is still <b>1.5x slower</b> than opensource 'nv' driver or any ATI driver</li>
+    <li>EeePC is so cool because Qt4/KDE4 renders text on it as fast as it does on more powerful graphics cards</li>
+</ul>
+<p>
+Looking at these tests you might conclude that opensource nv and radeonhd drivers are the best. Yes, but only at rendering text. On my home computer I also want video and I wasn't able to use XV with any of the opensource drivers. With older cards XV may work, with mine it did not. Playing video through X11 was simply too slow so at this moment I'm forced to use proprietary driver. And exactly as five months ago, I choose ATI just because it's still faster.
+</p>
+<p>
+I'm really looking forward distributions compiling Qt itself or Qt-based programs with Raster graphics system by default. Yes, it will make Qt/KDE applications slower on remote X sessions, but I'm ready to pay that penalty for the impressive 10x speedup in regular usage. For people who often use remove X, 
+distributions may provide replacement Qt binaries compiled with X11 graphics system or provide a system-wide configuration.
+</p>
+
+<h2>ATI fglrx driver warnings and hints</h2>
+<p>
+Remember that video and 3d won't work with Composite. Also, X11 may freeze on shutdown. To avoid freezes, try these solutions one by one:
+</p>
+<ul>
+    <li>do not use 'evdev' driver for keyboard and mouse, use 'kbd' and 'mouse' drivers instead</li>
+    <li>stop atieventsd daemon</li>
+    <li>add 'Option "Composite" "off"' to xorg.conf to turn off Composite completely</li>
+</ul>
