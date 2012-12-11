@@ -1,0 +1,53 @@
+---
+layout: default
+title: "Ruby Language Support in KDevelop4"
+header: Blog
+---
+
+<p>
+It's been more than a week since I got back from Kate and KDevelop Hacksprint we had in Berlin, but I feel it's never late to write a blogpost about it.
+</p>
+<p>
+The hacksprint was full of hacking, drinking awesome German beers, socializing, sightseeing and many more. I have to say I enjoyed every minute of it. Many thanks for Milian for organizing this event!
+</p>
+<p>
+This time I set up a bold goal for myself. I had to make KDevelop 4 good for my everyday work and finally stop using KDevelop 3. For that to happen I had to do three simple things:
+</p>
+<ol>
+    <li> don't let C++ parser to take all my memory when opening Ruby interpreter sources</li>
+    <li> have proper X session management support to correctly reopen all my running KDevelop sessions at X startup</li>
+    <li> implement Ruby language support (at least) with the same feature set as in KDevelop&nbsp;3</li>
+</ol>
+<p>
+Thanks to a good beer and to a good company, I did everything I planned!
+</p>
+
+<h2>Ruby Support</h2>
+<p>
+Ruby support features we have so far in KDevelop&nbsp;4 are:
+<ul>
+    <li>Ruby application template</li>
+    <li>Ability to open existing projects with Generic Project Manager</li>
+    <li>Quick Open Files/Classes/Functions and a Class View</li>
+    <li>Outline and Previous/Next Function navigation</li>
+    <li>Rails-specific switching between controllers/models/views/tests</li>
+    <li>Run Current File feature with automatically created launch configuration</li>
+    <li>Run Current Test Function (works only for Test::Unit framework), again with automatically created launch configuration</li>
+</ul>
+</p>
+<p>
+I've imported Gitorious project (yeah, it's Ruby on Rails!) to illustrate my words.
+</p>
+
+{% image_tag Quick Open Function, /blog/images/kdevelop_ruby3.png %}
+
+{% image_tag Rails-specific "Switch to View" navigation using regular Quick&nbsp;Open&nbsp;widget, /blog/images/kdevelop_ruby4.png %}
+
+{% image_tag Run Current File, /blog/images/kdevelop_ruby7.png %}
+
+<p>
+To try Ruby support yourself, you'll need to compile the <a href="https://github.com/adymo/kdevelop-ruby" target="_blank">plugin from playground</a> yourself. I have no plans to release it yet, but if you'd like to test it or use it for everyday work, please do. I'm writing Ruby code with KDevelop4 every day now, so the Ruby support is stable and I intend to keep it that way in the future.
+</p>
+<p>
+This is only the beginning. Ahead is the long way to a best possible Ruby support in KDevelop&nbsp;4. Stay tuned!
+</p>
