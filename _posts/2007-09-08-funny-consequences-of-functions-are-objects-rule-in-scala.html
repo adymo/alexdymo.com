@@ -37,13 +37,10 @@ object MyProg {
         // not possible because doSmthStr is of type String => int
         // which is supertype of AnyRef => int
         compute(doSmthStr)
-
         // possible because doSmthAny is exactly of type AnyRef => int
         compute(doSmthAny)
-
         // possible because doSmthStr is exactly of type String => int
         compute2(doSmthStr)
-
         // possible because doSmthAny is of type AnyRef => int
         // which inherits String => int
         compute2(doSmthAny)
