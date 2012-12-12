@@ -90,6 +90,21 @@ hr {
     background-color: #000;
 }
 
+blockquote {
+    margin: 24px 0;
+    font-style: italic;
+}
+blockquote:before {
+    display: block;
+    height: 0;
+    margin-left: -0.8em;
+    content: '“';
+}
+blockquote:after {
+    margin-left: 0.2em;
+    content: '”';
+}
+
 pre {
     margin: 24px 0;
 }
