@@ -1,0 +1,24 @@
+---
+layout: default
+title: "KDevelop4 Evolution: The Project and Buildsystem Management"
+header: Blog
+---
+<p>
+IDE's project management features are what everyone can see. Together with advanced language support features, proper build system support is the most prominent feature that differentiates IDE's from various editors, advanced and not.
+</p>
+<p>
+And proper project management with proper buildsystem support is hard. KDevelop3 was very good at that. Anjuta only recently got close to what our Automake manager had for 4 years. My KDE-Eclipse autotools plugin did get some attention by RedHat guys after I stopped working on it, but I don't know what happened next. Seems like "fedora eclipse" project now superseded it. So even Eclipse doesn't have something on a par yet.
+</p>
+<p>
+This all means KDevelop's features are still unique. Especially unique is QMake manager which has no alternatives I know about. After Andreas Pakulat took my qmake parser and vastly improved the manager in KDevelop 3.4, we can open and manage the most complex qmake project - the whole Qt library (both 3.x and 4.x versions).
+</p>
+<p>
+But the time doesn't stop and KDevelop development doesn't stop either. We always wanted to change two things in 3.x - make it possible to open more than one project at a time and avoid code and UI duplication between buildsystem plugins.
+</p>
+<p>
+As for today, in KDevelop4 we managed to realize our plan. First, Andreas Pakulat implemented support for opening several projects at a time. Second, we used Roberto Raggi's project management architecture with one user-visible "Project Management View" which displays information from various build system managers. That all grants the popular wish to open many projects and solves code maintainability and complexity issues at the same time!
+</p>
+<p>
+You can see the current state of things in the screenshot below where I've opened two QMake projects using QMake Manager and KDevelop4 project using Generic Manager (CMake Manager is not yet ready). Looks cool, doesn't it?&nbsp;;)
+</p>
+{% image_tag KDevelop with two QMake and one CMake project opened, /blog/images/kdevelop-projects.png %}

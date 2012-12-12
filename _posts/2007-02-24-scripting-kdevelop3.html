@@ -1,0 +1,80 @@
+---
+layout: default
+title: "Scripting KDevelop3?"
+header: Blog
+---
+<p>
+"Scripts" menu has been a dark horse of KDevelop since it first appeared. Almost nobody knew what it was and understood what hides beneath it (myself included until recently). But in fact the menu is the only visible hint KDevelop3 has some scripting features.
+</p>
+<p>
+Those features are not so powerful as in Emacs, but they solve different problem. Emacs has Emacs Lisp to:
+</p>
+<ul>
+    <li>extend the environment</li>
+    <li>and automate common tasks</li>
+</ul>
+<p>
+All modern IDE's I know about use different approach. They have:
+</p>
+<ul>
+    <li>extension system with plugins written usually in the same language IDE was created</li>
+    <li>and scripting language or scenarios to automate tasks within the IDE.</li>
+</ul>
+<p>
+You can write plugins in C++ for KDevelop and or course you can write scripts. KDevelop exposes its internals via DCOP therefore the choice of scripting language is virtually unlimited. Either your language has DCOP bindings (like Perl, Java, Python, Ruby, KJS) or it can execute dcop command via shell.
+</p>
+<p>
+Imagine a C++ project with some parts written in Python or Ruby. You naturally want it to be opened as C++ project to have nice integration but you also want a way to easily run your Ruby and Python programs. When working on Ruby projects, you are able to run currently edited programs. But there's no such option when a C++ project is opened. So why don't we implement that with a script?
+</p>
+<p>
+KDevelop automatically loads all scripts it can find into the "Scripts" menu. The search path by default is $KDEDIR/share/apps/kdevelop/scripts, $KDEDIR/share/apps/kate/scripts and their user-editable equivalents ~/.kde/share/apps/kdevelop/scripts and ~/.kde/share/apps/kate/scripts.
+</p>
+<p>
+Script has to be an executable file and needs to have a .desktop file with a short description. Our script menu item will be called "Run Ruby Program" and the actual script will be a shell script called runrubyprogram.sh. Below are the sources for runrubyprogram.desktop and runrubyprogram.sh I wrote today:
+</p>
+<p class="small-caps"></p>
+{% highlight bash %}
+-- runrubyprogram.desktop --
+[Desktop Entry]
+Encoding=UTF-8
+Name=Run Ruby Program
+Type=ShellScript/bash
+X-KDE-ScriptName=runrubyprogram.sh
+{% endhighlight %}
+
+{% highlight bash %}
+-- runrubyprogram.sh --
+#!/bin/bash
+
+#get the name of active file and project
+file=`dcop $1 SimpleMainWindow caption`
+projectdir=`dcop $1 KDevProject projectDirectory`
+
+#strip "KDevelop" from the window caption to get the real filename
+file=`echo $file | sed 's/ - KDevelop//' | sed 's/file:\/\///'`
+
+cwd=`pwd`
+
+if [ ! -z $projectdir ]; then
+    #strip projectname
+    file=`echo $file | sed 's/^[^-]*- //'`
+    cwd=$projectdir
+fi
+
+#run current file with ruby in KDevelop
+dcop $1 KDevAppFrontend startAppCommand "$cwd" "ruby $file" "false"
+{% endhighlight %}
+
+<p>
+As you can see, two DCOP calls are made to get the name of currently opened file and project directory and one DCOP call to execute a command inside KDevelop. Each DCOP call is a call to some part of KDevelop which exposes methods via interfaces. For example, startAppCommand is a method of KDevAppFrontend interface. There's no documentation about what is exposed, but just run kdcop tool to explore the complete list of interfaces and their methods and check how they work.
+</p>
+<p>
+When you save your script in ~/.kde/share/apps/kdevelop/scripts and restart KDevelop, you'll be able to run your ruby programs having a C++ project opened like shown in the screenshot below.
+</p>
+{% image_tag Custom Run Ruby Program script that extends KDevelop 3, /blog/images/kdevelop_scripts.png %}
+<p>
+PS: this post was inspired when I was reviewing the KDevelop wishlist named <a target="_blank" href="http://bugs.kde.org/show_bug.cgi?id=56884">"Unable to execute Python scripts in a C/C++ project"</a>.
+</p>
+<p>
+PPS: I do believe we can make scripting more powerful and easier with KDevelop4 and we have two great technologies - QtScript and Kross for that... but this is another story&nbsp;;)
+</p>

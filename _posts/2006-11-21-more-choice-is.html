@@ -1,0 +1,110 @@
+---
+layout: default
+title: "More Choice Is..."
+header: Blog
+---
+
+<h2>Choices == Headaches ?</h2>
+<p>
+I've recently enjoyed <a target="_blank" href="http://www.joelonsoftware.com/items/2006/11/21.html">this article from Joel</a>&nbsp;:) No, the beginning of the article was sensible, but the end was...
+</p>
+<p>
+If we follow him, then we must conclude we don't need shampoo for the hair and gel for the body. One is sufficient, and don't blame if you get a dandruff thereafter...
+</p>
+<p>
+We also don't need a soup and the main course served to you one after another in the restaraunt. What you really need is some stuff mixed together in one plate with one device to eat instead of spoons, forks and knives... And yes, don't dare to ask for the desert because it was already included...
+</p>
+<p>
+Also urge the authors to write only one book during their life. If you have something to say, say that once. And don't try to write about anything that was ever written before...
+</p>
+<p>Finally, don't even try to reboot your computer to boot Linux instead of Windows because Joel says the only thing you can ask your computer to do is to say "bye bye"...
+</p>
+<p>
+I can continue my examples for ages.
+</p>
+<p>
+What I would like to say here is that it is useful to get things to their extreme to study them (like <a target="_blank" href="http://en.wikipedia.org/wiki/Georg_Wilhelm_Friedrich_Hegel">Hegel</a> used contradiction and negation to study the properties of the unity). But it is not sensible to apply extremeness in every day though. And that's exactly what Joel does.
+</p>
+<p>
+Looks like Barry Schwartz's book <a target="_blank" href="http://www.amazon.com/Paradox-Choice-Why-More-Less/dp/0060005688">The paradox of choice</a> became a catalyst for this article. I haven't read the book yet but I've listened to the Google video <a target="_blank" href="http://www.youtube.com/watch?v=6ELAkV2fC-I">The Paradox of Choice, why more is less</a>. The book is on its way from the online store already but from what I heard and read it's not going to be significantly different in core ideas from the lecture.
+</p>
+<p>
+Barry's lecture was excellent and thoughtful but it seems people (and Joel too) missed "Choice is Good" part of it. The whole idea of "The Paradox of Choice" seems for me not "Choice is bad" or "Choice == Headaches" but rather "<i>Too much</i> choice is bad". Schwartz stresses many times but his message seems to be missing. People just like to pick up the easiest but extreme ideas.
+</p>
+<p>
+Of course we shall remember of "too much choice is bad" and use that knowledge. But how to make sense from "Paradox of Choice" and not fall into utter oversimplification? I've thought about that for a while and this is what I think about it.
+</p>
+
+
+<h2>Overcoming the Paradox of Choice</h2>
+<p>
+First, let's look at "choice" in its everyday meaning. Say, we can have one of four things. Let's call them A, B, C and D. This statement in terms of logic would naturally be
+</p>
+{% highlight ruby %}
+A or B or C or D
+{% endhighlight %}
+<p>
+Sometimes in the real life we can have not only one of these things but a combination of them. This would become
+</p>
+{% highlight ruby %}
+A or B or C or D or AB or AC or AD or BC or ... or ABCD
+{% endhighlight %}
+<p>
+That is the choice represented in terms of some formal system S based similar to (human) logic.
+</p>
+<p>
+So far so good. Now let's imagine situation when we must have all A, B, C and D. We must have them maybe because they serve different purpose or just we like them, whatsoever. In terms of S this situation would become
+</p>
+{% highlight ruby %}
+A and B and C and D
+{% endhighlight %}
+<p>
+Do you recognize the difference between choice (represented by "or" operator) and this phenomenon (represented by "and"). I'll give the new phenomenon the name "chance". Chance might not be the best word but it's colourful enough to stress my point here.
+</p>
+<p>
+So we as people in our everyday life have "choices" and "chances". And that real world situation perfectly transforms into the world of computer programs. Sometimes we are given a choice to do either A <b>or</b> B <b>or</b> C <b>or</b> D, but sometimes we need a chance to do A <b>and</b> B <b>and</b> C <b>and</b> D. If we apply ideas from "The Paradox of Choice" we might want to not give our users too much choice. But at the same time we certainly want to give our users more chances! For example, if your media player don't have a playlist, it certainly revokes your chance. But if it has two or more playlists or player windows (remember noatun?) then it's giving you choice, in this case too much choice.
+</p>
+<p>
+<i>From this perspective software development looks like the process of giving users maximum number of chances and at the same time not too much choice!</i>
+</p>
+<p>
+You could say here that the chance and choice are elusive and sometimes it's not possible to draw a distinct border between them. Indeed, if we look at Joel's example of shutdown options - which ones are chances and which one are options that only give a choice. But nevertheless I believe there's a way to tell a difference between them. Applying common sense might help. Basically A and B takes place when:
+</p>
+<ul>
+    <li>A significantly differs from B</li>
+    <li>A serves the different purpose than B</li>
+    <li>A gives results different from B</li>
+</ul>
+<p>
+It's possible to add more points here but I hope you get the idea. If you get <b>A and B</b> you're giving the user two chances which is good. If you get <b>A or B</b> you have to think whether you're giving your users too much choice. That is my simple rule!
+</p>
+<p>
+Now let's get back to Joel. First he says there're 7 different shutdown options in Vista:
+</p>
+{% highlight ruby %}
+W(sWitch user) L(Log off) C(loCk) R(Restart) E(slEep) H(Hibernate) S(Shutdown)
+{% endhighlight %}
+<p>
+He starts to place operators between them:
+</p>
+{% highlight ruby %}
+CWL=(W or L or C) R EH=(E or H) S
+{% endhighlight %}
+<p>
+Then he simply puts "or"'s everywhere and simplifies the expression to just one thing
+</p>
+{% highlight ruby %}
+BBye=(CWL or R or EH or S)
+{% endhighlight %}
+<p>
+Was there a fault in his derivation of BBye? In my opinion yes because he considered the set of options from only one point of view - the "too much choice is less" point. He didn't try to look at those options as at chances. If we carefuly did, he might have ended up with something different, for example with
+</p>
+{% highlight ruby %}
+CWL and R and EH and S
+{% endhighlight %}
+<p>
+Of course, another interpretations are possible and you might derive another formula (like Vista developers who put "and"'s everywhere).
+</p>
+<p>
+That's finally all I wanted to say today&nbsp;:) I hope you got a <i>chance</i> to read this post to the end and you understand my idea that as a software developer you don't have a <i>choice</i> between A (giving your users less choice) and B (giving them more chances) - because A and B are your <i>chances</i>&nbsp;;)
+</p>

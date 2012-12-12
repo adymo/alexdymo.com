@@ -1,0 +1,42 @@
+---
+layout: default
+title: "KDevelop4 Evolution: The UI"
+header: Blog
+---
+<p>
+It's been a long time since I last talked about the progress on KDevelop4. This has to change&nbsp;;) I'll try to keep everyone informed about recent developments in KDevelop4.
+</p>
+<p>
+Last time our new user interface concept ("Sublime") was covered in <a target="_blank" href="http://commit-digest.org/issues/2007-01-07/">commit-digest article</a>. At that time only the sublime user interface library code was available. Today we have two major UI design decisions implemented.
+</p>
+<p>
+First was the support for areas (the KDevelop's name for perspectives). Area in KDevelop is the set of views (documents) and toolviews (docks). At this moment KDevelop has only "coding" area, debugger and design areas will be used once respective plugins are ported to KDevelop4.
+</p>
+<p>
+Second major design decision was multi-mainwindow operation. KDevelop3 with its only one mainwindow and non-detacheable toolviews was hardly optimal for dual monitor setups. KDevelop4 allows to have as many mainwindows as necessary.
+</p>
+<p>
+The interesting thing is how multiple mainwindows and areas work together. Of course, different mainwindows can have different areas. Basically opening one more window with "debug" area will be the default way to do debugging. Same for Qt UI design - you will have new mainwindow with "design" area to work on Qt .ui files.
+</p>
+<p>
+But that's not all we can do. Eclipse pretends it can show one perspective in two or more mainwindows. KDevelop4 now does that as well, except that it doesn't pretend the area is the same in all those mainwindows. You can duplicate mainwindow with "coding" area but what you get is cloned area called "coding (copy)" shown in the new mainwindow. This means all view/toolview layout and settings belong to the new cloned area so no confusion happens when you close your windows and save areas.
+</p>
+<p>
+In the screenshot below, you can see one KDevelop program with three mainwindows. The background window shows "coding" area, two topmost windows show the clones of "coding" area with different view/toolview layout. So nothing will prevent from using KDevelop in dual-monitor setups  anymore. "New Window" action from the window menu will duplicate the mainwindow and clone its area as necessary. The cloning operation is relatively cheap, resources are used just to create a new mainwindow and views inside it. No KDevelop plugin is loaded for the second time.
+</p>
+<p>
+Toolviews that use plain Qt4 dockwidgets with no hacks are handy as well. Unlike KDevelop3, you can dock/undock and close them completely.
+</p>
+<p>
+Splitting is of course in place too, but with slightly different logic than in KDevelop3. Now it behaves more like Kate when current view under the cursor is splitted rather than the whole region with views.
+</p>
+<p>
+Don't bother looking at combobox that we currently have as a way to switch between views because it's our temporary replacement for a tabwidget. Everybody knows that tabwidget doesn't scale when lots of files are opened and everybody hates QTabWidget for extra bevel and border. We hated tabwidget too so we had to avoid it&nbsp;;)
+</p>
+<p>
+All that is implemented in KDevelop4 shell in &lt;200 lines of code&nbsp;;) Ok, ok, another 3k loc reside in <a target="_blank" href="https://projects.kde.org/projects/extragear/kdevelop/kdevplatform/repository/revisions/master/show/sublime">Sublime</a> library&nbsp;:) Sublime is the fourth UI library KDevelop uses and the third one I wrote. And I do hope it will be the last one. This time I believe I got it right. At least the code is surely better than infamous <a target="_blank" href="http://websvn.kde.org/branches/KDE/3.5/kdelibs/kmdi/">KMDI library</a> and Sublime certainly is more capable than my previous <a target="_blank" href="http://websvn.kde.org/branches/KDE/3.5/kdevelop/src/newui/">NewD aka SimpleIdeal</a> and <a target="_blank" href="http://websvn.kde.org/trunk/playground/devtools/ideal/">Ideal</a> libraries. Also this time the I wrote an extensive test suite to guarantee that UI is stable and bug-free.
+</p>
+<p>
+So, enjoy the screenshot and don't just wait for KDevelop4. It is high time to do an IDE right and we know how to do that this time. What we need is you&nbsp;:) Join us to create the IDE of your dream!
+</p>
+{% image_tag KDevelop 4 Sublime UI, /blog/images/kdevelop_sublime_ui.png %}

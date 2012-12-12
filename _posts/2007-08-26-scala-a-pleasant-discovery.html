@@ -1,0 +1,54 @@
+---
+layout: default
+title: "Scala: a Pleasant Discovery"
+header: Blog
+---
+<p>
+I've recently became quite confident that choosing programming language is a process that is very similar to choosing what to cook. First you taste something. If you like it, you eat it. If you really really like it you look for a recipe and try to cook it. Same for the programming language. First you see some code in that language. If you like it, you read more about the language, learn its concepts and ideas. If you really really like what you found, you start programming in that language.
+</p>
+<p>
+What's interesting is that your consciousness is not usually involved in the tasting phase. On the surface it's simple - you either like new thing or not. But I do believe that there's a serious subconscious process involved here that takes into account all your previous experience and tells you "yes" or "no" to this new thing.
+</p>
+<p>
+I've made several failed attempts to ignore this subconscious decision and force myself into learning things I don't like. Ironically, such first attempt was Lisp and the last one was Haskell. Needless to say that Lisp still means to me nothing more than lots of isolated, sil^^^... <a target="_blank" href="http://acronyms.thefreedictionary.com/Limited+Instructions+Set+Processor">you know what&nbsp;;)</a> and Haskell is still for me nothing more than a pure product of pure mind.
+</p>
+<p class="small">
+Once again, no offense to these languages and people using them. That's just my mind that doesn't allow me to like these great languages&nbsp;;)
+</p>
+<p>
+Contrary to that, I made quite a success learning languages I liked. The best examples would be Prolog and Ruby. And yesterday I discovered for me another language I liked from the first look - <a target="blank" href="http://scala-lang.org">Scala</a>. So instead of working hard on my projects and my PhD, I spent last two days reading about Scala.
+</p>
+<p>
+And I should say the language is very cool. It implements an interesting mixture of functional and object-oriented programming paradigms but keeps static typing and very clean syntax. For those familiar with Ruby, I'd 
+say Scala often feels like Ruby that is statically typed, has C-ish syntax and implements more functional programming goodies. I think next time I'll come up with a side-by-side Ruby vs Scala comparison.
+</p>
+<p>
+And finally a little code snippet for you to taste (from excellent <a target="_blank" href="http://lamp.epfl.ch/~odersky/">Martin Odersky's</a> <a target="blank" href="http://www.scala-lang.org/docu/files/ScalaByExample.pdf">Scala by Example</a> book)
+{% highlight scala %}
+abstract class Tree
+case class Sum(l: Tree, r: Tree) extends Tree
+case class Var(n: String) extends Tree
+case class Const(v: int) extends Tree
+
+type Environment = String => int
+
+object MyProg {
+    //uses pattern matching to evaluate the expression
+    def eval(t: Tree, env: Environment): int = t match {
+        case Sum(l, r) => eval(l, env) + eval(r, env)
+        case Var(n)    => env(n)
+        case Const(v)  => v
+    }
+
+    def main {
+        val env: Environment = { case "x" => 5; case "y" => 10 }
+
+        //(x+x) + (7+y)
+        var expr: Tree = Sum (Sum(Var("x"), Var("x")), Sum(Const(7), Var("y")))
+        //(5+5) + (7+10)
+        println(eval(expr, env))    //prints: 27
+    }
+}
+
+MyProg.main
+{% endhighlight %}

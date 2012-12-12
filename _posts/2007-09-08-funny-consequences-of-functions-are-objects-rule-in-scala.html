@@ -1,0 +1,69 @@
+---
+layout: default
+title: "Funny Consequences of \"Functions are Objects\" Rule in Scala"
+header: Blog
+---
+<p>
+Scala language is an unique combination of interesting language features and clear and concise syntax which is so rare in the world of programming languages.
+</p>
+<p>
+Scala is truly object-oriented. This does mean that everything is an object, even functions. Err, functions you'd ask? Yeah, functions are indeed objects but that wasn't a surprise for me because I've seen and used that in Javascript. But function inheritance indeed was a surprise.
+</p>
+<p>
+How can that be possible? Martin Odersky gives an example that functions with one argument in Scala are objects that mix this trait:
+</p>
+{% highlight scala %}
+trait Function1[-A, +B] {
+  def apply(x: A): B
+}
+{% endhighlight %}
+<p>
+Traits are the Scala implementation of <a target="_blank" href="http://en.wikipedia.org/wiki/Mixin">mixins</a>. For C++ guys mixin is just a multiple inheritance. For Ruby guys trait is more like a module. The difference is that in Ruby you'd "include" the module into your class and in Scala you'd "extend" the class with a trait.
+</p>
+<p>
+In the example above "-A" means that function that has AnyRef as an argument inherits a function that has a String argument. Take a look at this magical example:
+</p>
+{% highlight scala %}
+object MyProg {
+    def doSmthStr(a: String): Int = a.length
+    def doSmthAny(a: AnyRef): Int = a.hashCode
+    def compute(function: AnyRef => int) = {
+        function("Haha")
+    }
+    def compute2(function: String => int) = {
+        function("Haha")
+    }
+    def main = {
+        // not possible because doSmthStr is of type String => int
+        // which is supertype of AnyRef => int
+        compute(doSmthStr)
+
+        // possible because doSmthAny is exactly of type AnyRef => int
+        compute(doSmthAny)
+
+        // possible because doSmthStr is exactly of type String => int
+        compute2(doSmthStr)
+
+        // possible because doSmthAny is of type AnyRef => int
+        // which inherits String => int
+        compute2(doSmthAny)
+    }
+}
+MyProg.main
+{% endhighlight %}
+<p>
+Isn't that cool, the function doSmthAny with AnyRef (aka Object in Java) argument inherits the function doSmthStr with String argument and therefore can be used whenever we need doSmthStr. Amazing!!!
+</p>
+<p>
+Even more amazing is when the return types in those functions are different. For a function to be the subtype of another function we not only require its argument to be a supertype, but its return value to be a 
+subtype. Citing <a href="http://www.scala-lang.org/docu/files/ScalaByExample.pdf" target="_blank">Scala by Example</a> book:
+</p>
+<blockquote>
+function S=>T is a subtype of S'=>T' if S' is a subtype of S and T is a subtype of T'
+</blockquote>
+<p>
+where S=>T is a function defined as:
+</p>
+{% highlight scala %}
+    def function(arg: S): T
+{% endhighlight %}

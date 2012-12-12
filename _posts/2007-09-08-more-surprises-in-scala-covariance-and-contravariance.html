@@ -1,0 +1,49 @@
+---
+layout: default
+title: "More Surprises in Scala: Covariance and Contravariance"
+header: Blog
+---
+<p>
+I've been reading more about Scala discovering more and more nice features the modern language with static typing can bring. Some of those features look to me just as an syntactic improvement over what we already can do with another statically typed languages like C++. For example, pattern matching example <a href="/blog/2007/08/scala-a-pleasant-discovery.html">from my last blog</a> is definitely what you can do with several AST classes (they need to have type() or rtti() method) and your own implementation of visitor pattern in C++.
+</p>
+<p>
+But there're some language features in Scala I didn't expect and didn't think about before. The perfect example IMHO is covariant and contravariant subtyping I discovered for myself just a couple of days before.
+</p>
+<p>
+Think about this example, if we have class B that inherits class A then we can use objects of type B whenever we need objects of type A. So far so good. But what if we have template class X with A and B as parameter types? C++ tells us X&lt;A&gt; and X&lt;B&gt; are unrelated:
+</p>
+{% highlight cpp %}
+class A {};
+class B: public A {};
+template<typename T> class X {};
+
+int main()
+{
+    B *t1 = new B;
+    A *t2 = t1; //ok because B inherits A
+
+    X<B> *x1 = new X<B>;
+    //error!!! because C++ has non-variant subtyping
+    // so X<B> and X<A> are different types
+    X<A> *x2 = x1;  
+}
+{% endhighlight %}
+<p>
+Contrary to that, in Scala you can declare that X[B] inherits X[A] and have covariant subtyping or even declare that X[B] inherits X[A] and have contravariant subtyping:
+</p>
+{% highlight scala %}
+class A {}
+class B {}
+class X[+Type] {}   // +Type means "covariant"
+
+val t1 = new B
+val t2 = t1 // ok, B inherits A
+
+val x1 = new X[B]
+val x2 = x1 // ok too because X[B] inherits X[A]
+
+return
+{% endhighlight %}
+<p>
+Not that some elements of covariance and contravariance of types didn't exist before in familiar languages like C++ and Java. Contrary to that, <a target="_blank" href="http://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)"> they did</a>, but most likely I woulnd't have learned about them if I didn't start learning Scala which directly exposes those things as language features. Cool language Scala is... I must say, very cool&nbsp;;)
+</p>

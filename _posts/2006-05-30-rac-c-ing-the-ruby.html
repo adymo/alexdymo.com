@@ -1,0 +1,81 @@
+---
+layout: default
+title: "Rac(c)'ing the Ruby"
+header: Blog
+---
+<p>
+As work on my ruby-based wiki parser continues, I started to have more and more fun with it. Today I travailed, trying to get RACC to fit my needs and discovered lots of interesting things about it. If you don't know the RACC - this is YACC for ruby (but without Lex/Flex companion&nbsp;;) to make you get more fun while you write hand-made lexer).
+</p>
+<p>
+Some time ago I discovered that RACC has one trouble. When a rule has a code block executed before entering the rule, usual numbering for "val" array becomes broken.
+</p>
+<p>
+For example, if we have a rule:
+</p>
+{% highlight antlr %}
+foo: moo boo
+     { result = val[0] + val[1] }
+     ;
+{% endhighlight %}
+<p>
+The result of the rule is computed by calculation of a sum of right part nonterminal's return values.
+</p>
+<p>
+But if we use the rule like this:
+</p>
+{% highlight antlr %}
+foo:
+     { result = "I break " }
+     moo boo
+     { result = val[1] + val[2] }
+     ;
+{% endhighlight %}
+<p>
+then we suddenly break "val" numbering scheme. Instead of "val[0]" and "val[1]" we should reference nonterminal's return values using "val[1]" and "val[2]". Apparently the code block before nonterminals breaks. Not a grave bug... but costed me several minutes to get an idea of what is happening.
+</p>
+<p>
+But today I glanced over racc output file and was stunned! RACC effectively considers these two rules as equal:
+</p>
+{% highlight antlr %}
+foo: {} moo boo ;
+foo: _any_nonterminal_ moo boo;
+{% endhighlight %}
+<p>
+and adds extra rule that breaks not only val[] numbering&nbsp;;)
+</p>
+<p>
+I implemented two examples (first is broken and second is ok) and studied them.
+</p>
+{% highlight antlr %}
+/* Example 1: */
+ a: {} a B
+     | A
+     |
+     ;
+/* Example 2: */
+ a: a B
+     | A
+     |
+     ;
+{% endhighlight %}
+<p>
+I found that the source of the problem was that for {} a special nonterminal @1 will be created and artificial rule like
+</p>
+{% highlight bash %}
+@1 -> ε
+{% endhighlight %}
+<p>
+will be added. But given input token A the parser allows both reducing the rule above and shifting A. Thus we have shift/reduce conflict that RACC hapily reports.
+</p>
+<p>
+Another issue is endless loop: if the input is B then the parser reduces using the artificial rule and keeps reducing it forever. That happens because it always observes the empty symbol (together with B) and has the rule to reduce it. Ironically, another competing rule to reduce (say hello to reduce/reduce conflict!!!)
+</p>
+{% highlight bash %}
+a -> ε
+{% endhighlight %}
+<p>
+stays after the first one and is not selected for reduce.
+</p>
+<p>
+To summarize, we have two shift/reduce conflicts and one reduce/reduce conflicts just because of the block. RACC is either was not designed to have before-rule blocks or the developers had something else in their mind. Alas, I haven't found any references to this issue yet.
+</p>

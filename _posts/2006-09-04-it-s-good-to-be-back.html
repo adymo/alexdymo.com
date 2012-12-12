@@ -1,0 +1,34 @@
+---
+layout: default
+title: "It's Good to Be Back"
+header: Blog
+---
+<p>
+Yes, I'm back after not committing for a month and I'm back with the new ruby parser for KDevelop. The parser is of course not finished and it barely parses simple ruby code but it is there. I'm looking forward to implementing some real ruby language support features. First will most likely be a code model (which will automatically give nice code view with classes, methods, etc.). As it turned out our kdevelop-pg parser generator framework makes it dead easy to do that. And its not only the kdevelop-pg that helps, the whole KDevelop4 architecture makes the process a lot faster.
+</p>
+<p>
+Previously when you wanted to implement the language support in KDevelop, you should have done:
+</p>
+<ol>
+    <li>lexer to tokenize the source</li>
+    <li>parser to transform the token stream into the AST</li>
+    <li>AST walker to make it possible to do something with it</li>
+    <li>AST parser to create the abstract code representation - the code model</li>
+    <li>"background parser" to execute the parser as a background job and fill the code model</li>
+    <li>language support part to run the background parser</li>
+</ol>
+<p>
+Today you still have to write the lexer and the parser, but you no longer have to care much about the AST and AST walkers(visitors) because they are generated for you. And once the code model definition file is written, the entire code model will be generated too. kdevelop-pg does all those things.
+</p>
+<p>
+From the other side, KDevelop4 has more generic language support and abstracted background parser so you can just tell the language support in several lines of code to use your parser. There's no need for language support code duplication which was so common in KDevelop3.
+</p>
+<p>
+Simply put, points #3 and #5 are automatic now, #2, #4 and #6 were made easier. At this point I'm wondering if it is feasible to eliminate the #4 completely, i.e. implement automatic generation of code model binder which traverses the AST and fills the codemodel with items.
+</p>
+<p>
+From what I can see KDevelop4 will really shine in the area of language supports. blackarrow is doing <a target="_blank" href="http://www.kdedevelopers.org/node/2311">wonders with C++</a>. jpetso completed his summer-of-code csharp project and the excellent csharp support is already in SVN. manyoso added java support that uses the complete java parser jpetso created last year. And if we add up language-neutral refactoring (which was another SOC project) to the stack, we would get the idea of how cool KDevelop4 is going to be!
+</p>
+<p>
+It doesn't look like I'm short of cool material for my <a target="_blank" href="http://conference2006.kde.org/conference/talks/15.php">aKademy presentation</a> :) Rock on, KDevelop!
+</p>

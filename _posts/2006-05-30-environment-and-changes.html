@@ -1,0 +1,62 @@
+---
+layout: default
+title: "Environment and Changes"
+header: Blog
+---
+<p>
+I hope people are not yet bored with my Ruby blog posts. It's just so cool to get into the new environment that makes you care about things you've never cared before. Ruby was definitely something I knew about but never enjoyed as much as I do now. Same applies to my new Ruby/Rails job. I don't think I would read a vendor branches chapter from the svn book without it&nbsp;:) Of course, the chapter is only the example, there were (and are) more interesting things.
+</p>
+<p>
+I started to write long posts not so long time ago, so let me keep this tradition and mention my search for elegant LALR grammar for lists of nested lists.
+</p>
+<p>
+Let's say we need to parse token stream:
+</p>
+{% highlight bash %}
+BBABBBABB
+{% endhighlight %}
+<p>
+as the list of two items with one nested list inside. The ideal result would look like
+</p>
+{% highlight bash %}
+(B (BAB) B) (B (BAB) B)
+{% endhighlight %}
+<p>
+The grammar that comes to mind is:
+</p>
+{% highlight antlr %}
+list: item
+    | item list
+    ;
+
+item: B list B
+    | A
+    ;
+{% endhighlight %}
+<p>
+This grammar is ambiguous and has one shift-reduce conflict (it's not clear whether we shall reduce finishing the list or shift starting it). All LALR parser generators would resolve the conflict to shift over reduce and would in fact make our parser fail. So we need to say "prefer reduce". I have several solutions but the cleanest (from the parser's viewpoint) is to add an artificial terminal, say X, denoting the beginning of the list. This grammar has no conflicts at all:
+</p>
+{% highlight antlr %}
+list: item
+    | item list
+    ;
+
+item: X B list B
+    | A
+    ;
+{% endhighlight %}
+<p>
+This solution is good for parser but hacky for lexer which has to supply this fake terminal&nbsp;;) Well, I'm sure there are better solutions but I'm completely missing them today.
+</p>
+<p>
+Addon: of course, if we allow to modify the lexer, something like this would be even better:
+</p>
+{% highlight antlr %}
+list: item
+    | item list
+    ;
+
+item: B_START list B_END
+    | A
+    ;
+{% endhighlight %}

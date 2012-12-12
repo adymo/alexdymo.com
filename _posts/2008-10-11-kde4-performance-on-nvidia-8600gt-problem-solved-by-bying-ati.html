@@ -1,0 +1,109 @@
+---
+layout: default
+title: "KDE4 Performance on NVidia 8600GT: Problem Solved by Bying ATI"
+header: Blog
+---
+<p>
+I've been running KDE4 desktop since May and I've constantly suffered from poor desktop performance and various graphics card related problems. Now I've solved those problems: I've bought an ATI card. Despite NVidia releasing the new <a target="_blank" href="http://www.nvnews.net/vbulletin/showthread.php?t=120679">Linux driver</a> and suggesting to <a target="_blank" href="http://www.nvnews.net/vbulletin/showthread.php?t=118088">tweak several performance-related configuration options</a>, I still decided to go and spend $50 on the new video card. Here is the long story why...
+</p>
+<p>
+On my NVidia GT8600 KDE4 had several types of performance problems:
+</p>
+
+
+<h2>1. Slow Repainting of Windows</h2>
+<p>
+When I used KWin as a window manager with disabled compositing (sic!), main windows of KDE4 applications took too much time to repaint themselves upon switching. When I used other window manager (twm for instance&nbsp;:)), the repainting was a lot faster. Measurements showed that KWin suddenly took more than 40% of CPU on window switching. Turning on compositing (aka "desktop effects") greatly improved KWin performance, but compositing was a no-go for me for the reasons I'll explain below.
+</p>
+<p>
+Status of the problem: <span style="color:red;">could not be solved for me</span>.
+</p>
+
+
+<h2>2. Slow Resizing of Windows and Plasma Applets</h2>
+<p>
+That's the problem all people using NVidia cards saw. It was the most severe but NVidia forum's suggestions helped.
+</p>
+<p>
+I created an autostart script
+</p>
+{% highlight bash %}
+#!/bin/bash
+nvidia-settings -a InitialPixmapPlacement=2 -a GlyphCache=1
+{% endhighlight %}
+<p>
+and added 3 more configuration options to the xorg.conf:
+</p>
+{% highlight bash %}
+Option "PixmapCacheSize" "3000000"
+Option "AllowSHMPixmaps" "0"
+Option "OnDemandVBlankInterrupts" "True"
+{% endhighlight %}
+<p>
+This all helped to get reasonable performance. Some people report that for them KDE4 flies with such configuration. For me it did not fly. The performance was just bearable, but KDE3 desktop was simply a lot faster.
+</p>
+<p>
+Status of the problem: <span style="color:green;">almost solved</span>.
+</p>
+
+
+<h2>3. Slow Desktop Effects</h2>
+<p>
+KDE4 with desktop effects turned on, remind me of running a heavy video game on integrated graphics card&nbsp;:) Slowness, freezes and so on.
+</p>
+<p>
+Using the newest driver and all options I told about above solved the problem. Once again, almost solved. Virtual desktop switching effects would still freeze times to times.
+</p>
+<p>
+In any case, I didn't care much because every time I turned on compositing, scrolling speed in Firefox degraded by an order of magnitude. I have to use Firefox a lot these days because I do web development at work so compositing became a complete "no-go" for me. Therefore I didn't really cared much about it being slow. I could be happy if only KWin hadn't got the problems with slow window repainting (the problem #1).
+</p>
+<p>
+Status of the problem: <span style="color:green;">almost solved</span>.
+</p>
+
+
+<h2>4. Slow Painting in KDE4 Apps</h2>
+<p>
+This problem didn't depend on window manager or compositing. It was always visible and the most annoying. It was also quite hard to track down and profile.
+</p>
+<p>
+One example was a listview widget in akregator with a list of posts. I have hundreds of posts there and listview scrolling was too slow for me. Valgrind said that the text painting was a problem. My laptop with old ATI X1600 card (and open-source driver) rendered the same text a lot faster and scrolling in akregator wasn't an issue at all.
+</p>
+<p>
+Second example was kate also having problems with painting text (see <a target="blank" href="http://bugs.kde.org/show_bug.cgi?id=171099">bug report</a> for details). The painting algorithm in kate part may not be ideal, but my system was supposed to be fast enough to counterbalance that. In reality, painting text with the nvidia driver was just too slow and non-optimal algorithm just merely increased the annoyance.
+</p>
+<p>
+Status of the problem: <span style="color:red;">I was unable to solve it</span>.
+</p>
+
+
+<h2>5. Corruption of System Tray Icons</h2>
+<p>
+Almost always icons in system tray were rendered with some weird background consisting from parts of other system tray icons. No driver updates and config options solved this problem
+</p>
+<p>
+Status of the problem: <span style="color:red;">I was unable to solve it</span>.
+</p>
+
+
+<h2>Conclusion</h2>
+<p>
+After several months of self-torturing I decided that it was enough for me. I went to the local shop and got a cheap ATI Radeon 3450 card for $50. It's inferior to my 8600GT but I don't care much because KDE4 just flies on it. And by "flies" I <i>do mean</i> that it's really really fast. All 5 problems I've listed above are gone now. Period. Finita la commedia&nbsp;:)
+</p>
+<p>
+It's not like things are all that shiny with an ATI. I miss the brightness setting in the driver (with nvidia you could do something like <i>nvidia-settings -a Brightness=-0.4</i>) and Firefox is still slow with compositing enabled. But in any case my desktop doesn't bother me anymore and I can just enjoy using it.
+</p>
+
+
+<h2>Update:</h2>
+<p>
+If after reading this post you think of selling your NVidia card and buying ATI, please note that proprietary ATI driver has at this moment (October 2008) several problems I know and can confirm:
+</p>
+<ul>
+    <li>video (xv and gl) doesn't work with composite turned on - it flickers</li>
+    <li>Xorg may fail to properly shutdown leaving only blank black screen</li>
+    <li>scrolling is still slow in Firefox with compositing turned on</li>
+</ul>
+<p>
+For me desktop effects are not important at all, I turn them off. Be aware of the problems listed above if you intend to use X composite extension and desktop effects in KDE4.
+</p>

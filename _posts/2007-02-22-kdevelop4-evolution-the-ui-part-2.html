@@ -1,0 +1,24 @@
+---
+layout: default
+title: "KDevelop4 Evolution: The UI, Part 2"
+header: Blog
+---
+<p>
+I know I promised to blog often about KDevelop4 progress, but I did not intend to write one more post today ;) The reason I'm doing this is that someone came today to #kdevelop IRC channel and asked whether we can open more than one embedded Konsole toolview in KDevelop. Of course my answer was "no sorry" because in KDevelop3 the usual modus operandi is 1 plugin => 1 view.
+</p>
+<p>
+But this is not the case in KDevelop4 anymore. During architecture rework that was done by yours trully and Andreas Pakulat we introduced so-called "toolview factories". So each KDevelop4 plugin now registers a toolview factory and then the shell application uses the factory to add toolviews when necessary.
+</p>
+<p>
+Until today, factories were used by mainwindow only once and only one toolview was visible on the screenshots from my previous post. Today I though that nothing prevents me from implementing a nice dialog to add new toolviews. After several minutes of hacking (actual view creation is only 2 lines of code thanks to 
+Sublime library, everything else I committed was the UI for the feature) I got this:
+</p>
+{% image_tag KDevelop 4 with two File Manager toolviews, /blog/images/kdevelop_sublime_ui2.png %}
+{% image_tag Adding new toolview in KDevelop 4, /blog/images/kdevelop_sublime_ui3.png %}
+<p>
+As you can see, there's no restriction anymore to the number of toolviews. You want 10 konsole's - you'll 
+get them! Also Qt4 dockwidget management system allows to group dockwidgets in tabs so some toolviews can be nicely kept together.
+</p>
+<p>
+Ok, that's all for today. Next time I'll leave UI and tell you about project management in KDevelop4. Stay tuned...
+</p>

@@ -1,0 +1,42 @@
+---
+layout: default
+title: "KDevelop4 Evolution: The Application Templates"
+header: Blog
+---
+<p>
+IDE's are usually created to make things easier and faster for developers. And most of them achieve this goal to some extent. But there is one group of people that has always suffered from IDE's. Those people are application template developers.
+</p>
+<p>
+Tons of subtle application template formats were invented to bend to submission those miserable souls who wanted to add their little template!
+</p>
+<p>
+Anjuta requires you to write a <a target="_blank" href="http://git.gnome.org/browse/anjuta/tree/plugins/project-wizard/templates/cpp.wiz.in">nice xml file</a> with template description including wizard page layout options, list of template files, directories and of rename rules. To do substitutions in the template files you have to spend a week learning extremely powerful but also extremely complicated <a target="_blank" href="http://autogen.sourceforge.net/">autogen</a> format so you could write something like <a target="_blank" href="http://git.gnome.org/browse/anjuta/tree/plugins/project-wizard/templates/cpp/src/main.cc">this</a>&nbsp;or&nbsp;<a target="_blank" href="http://git.gnome.org/browse/anjuta/tree/plugins/project-wizard/templates/gtk/src/main.c">this</a>.
+</p>
+<p>
+Eclipse makes the process even more interesting. There's no application wizard, there's no template format. When you want something like that, you just have to code it in Java by yourself. Easy, isn't it? Choose between org.eclipse.cdt.ui.wizards.NewCProjectWizard, org.eclipse.ui.wizards.newresource.BasicNewResourceWizard or org.eclipse.ui.INewWizard, subclass/implement, write everything else by hand and get something like <a target="_blank" href="http://websvn.kde.org/trunk/playground/devtools/eclipse/org.kde.autotools.ui/src-autoui/org/kde/autotools/ui/wizards/">I got for KDE-Eclipse</a>.
+</p>
+<p>
+KDevelop3 was not really different. Our first template format required you to write a <a target="_blank" href="http://websvn.kde.org/branches/KDE/3.2/kdevelop/languages/cpp/app_templates/cpphello/
+cpphello?revision=409205&view=markup">template description</a> and a <a target="_blank" href="http://websvn.kde.org/branches/KDE/3.2/kdevelop/languages/cpp/app_templates/cpphello/script?revision=409205&view=markup">perl script</a> with installation instructions. Our second template format combined descriptions with processing/installation instructions to <a target="_blank" href="http://websvn.kde.org/branches/KDE/3.5/kdevelop/languages/cpp/app_templates/cpphello/cpphello.kdevtemplate?revision=624443&view=markup">the single file</a>. To make things even more interesting, we did not allow to have subdirectories in the templates, so you had to write special subdirectory creation and file copy instructions when you wanted for example to put the main.cpp into /src.
+</p>
+<p>
+I created several application templates for KDevelop by myself and found that process too complicated and annoying. So when I was working on KDE-Eclipse I thought of ideal template format and soon figured out that <i>a simple tarball is the format of my dream</i>.
+</p>
+<p>
+Really, why don't application wizard just extract the tarball and so some variable substitutions?  I implemented exactly that: extraction + substitution and that worked better than any of those sophisticated template systems I know about.
+</p>
+<p>
+So when the time had come to implement the application wizard for KDevelop4 I didn't hesitate and  did the same thing again. So from now to create an application template for KDevelop4 you just need&nbsp;to:
+</p>
+<ul>
+    <li>have a directory with your project</li>
+    <li>place variables in file names and contents</li>
+    <li>write very simple .kdevtemplate file with a description like <a target="_blank" href="https://projects.kde.org/projects/extragear/kdevelop/kdevelop/repository/revisions/4.0/entry/app_templates/cpp/CMake/cmake_qt4gui/cmake_qt4gui.kdevtemplate">this one</a></li>
+    <li>pack it</li>
+</ul>
+<p>
+As an example, take a look at our <a target="_blank" href="https://projects.kde.org/projects/extragear/kdevelop/kdevelop/repository/revisions/4.0/show/app_templates/cpp/CMake/cmake_qt4gui">Qt4 application template</a> in the unpacked form.
+</p>
+<p>
+Of course, the variables that are not known to the application wizard has still to be declared in .kdevtemplate so that user can be asked at project creation time. But the whole thing is still as simple as possible and I will make sure we will stick to KISS principle and won't harry apptemplate developers anymore&nbsp;;)
+</p>

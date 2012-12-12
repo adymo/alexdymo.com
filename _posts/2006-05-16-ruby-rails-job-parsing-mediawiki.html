@@ -1,0 +1,79 @@
+---
+layout: default
+title: "Ruby/Rails Job. Parsing Mediawiki"
+header: Blog
+---
+<p>
+As probably some of you already know, I've got a new cool job recently (no, the university is still my employer, that's the job I do after the Uni). My new duties are Ruby and Rails application development&nbsp;:) Some things I do now are free software, some not. One of the free software things is <a target="_blank" href="http://mediacloth.rubyforge.org/">MediaCloth</a> - MediaWiki syntax parser and HTML generator which I started to implement last week.
+</p>
+<p>
+I don't know if there are true mediawiki parsers out there, but this one is "true". It has handwritten lexer, LALR Yacc-generated parser, AST and HTML generator (which is just another AST walker). AFAIK the "official" parser is regexp-based.
+</p>
+<p>
+Development of the parser was much fun for me and made me think about some apparently simple things that suddenly became more and more complex. The one of such things was the discovery that MediaWiki syntax is actually context-sensitive. Heh, that's why people like it! We people hate html and xml in general. It's complex for us but simple for our computers because it's context-free. But we do like context-sensitive languages, we apparently have good parsing mechanisms for them.
+</p>
+<p>
+Let's look at simple list written in wikimedia syntax:
+</p>
+{% highlight moin %}
+ * a
+ * b
+ * c
+{% endhighlight %}
+<p>
+This is normal flat bullet list and its parsing does not imposes any difficulty. The context-insensitive grammar below will parse the list:
+</p>
+{% highlight text %}
+List -> Item List
+    | ε
+Item -> * ID
+{% endhighlight %}
+<p>
+Here ID is any terminal symbol like "a", "b" or "c" above. The left derivation of the list from the root nonterminal will look like:
+</p>
+{% highlight text %}
+List => Item List => *a List => *a Item List =>
+=> *a *b List => *a *b *c List => *a *b *c
+{% endhighlight %}
+<p>
+The example above would have persuaded you that wiki language is context-insensitive and thus simple (at least in computer's sense of simple). But we all know lists can be nested like this:
+</p>
+{% highlight moin %}
+ * a
+ ** 1
+ ** 2
+ * b
+{% endhighlight %}
+<p>
+Ok. Now we have a parsing problem. The grammars that come to mind are not context-insensitive anymore. One of such possible grammars is shown below:
+</p>
+{% highlight text %}
+List -> Item List 
+    | Sublist List
+    | ε
+Item -> * ID Level1
+Level1 Sublist -> ** ID Level1
+Level1 Item -> Item
+Level1 List -> ε
+{% endhighlight %}
+<p>
+With this grammar we can derive our list from the root nonterminal with left derivation like this one:
+</p>
+{% highlight text %}
+List => Item List => * a Level1 List => * a Level1 Sublist List =>
+=> * a ** 1 Level1 List => * a ** 1 Level1 Sublist List =>
+=> * a ** 1 ** 2 Level1 List => * a ** 1 ** 2 Item List =>
+=> * a ** 1 ** 2 * b List => * a ** 1 ** 2 * b
+{% endhighlight %}
+<p>
+If we look at the grammar closely, we would notice it's actually context sensitive. Even more closer look would reveal that the grammar is recursively enumerable because the right part of production is longer than its left part:
+</p>
+{% highlight text %}
+Level1 Sublist -> ** ID 
+{% endhighlight %}
+<p>
+From the all discussion above it turns out that the mediawiki language is not only context-sensitive, but recursively enumerable. In computer world such languages are usually considered "hard" and "complex". The interesting thing is that people obviously disagree with such definition for complexity. A person does have an effective mechanism to parse context-sensitive languages and therefore loves wiki formatting!
+</p>
+<p>
+Heh, probably for the time we use Turing machines our computers will still fail at those apparently simple tasks like language parsing. You can believe in Gödel's hypothesis or not, but people still have more computation power than their computers&nbsp;;)
+</p>
