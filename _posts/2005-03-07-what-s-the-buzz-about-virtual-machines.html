@@ -1,0 +1,105 @@
+---
+layout: default
+title: "What's the Buzz About Virtual Machines?"
+header: Blog
+---
+<p>
+I always hear how great VMs are, how great is to write programs for VMs, how easy those programs are executed, how efficient they are and so on... That always sounds cool, but I always have a strong feeling that it only sounds such.
+</p>
+<p>
+Ok, let's consider known "good things" about VM.
+</p>
+<ol>
+    <li>
+        <p>Programs written for VM are easily portable</p>
+        <p>
+        Yes, of course. A program compiled into, for example, java VM bytecode can be run everywhere the VM exists. This assumes that no external stuff is used. Yes, no external libraries, no external programs written not for VM. How often can the external stuff be useful? I'd answer - very often. Even if you a volunteer programmer and work times to times on several tasks you will gather a collection of development tools (libs, programs, etc.) you're using. And you're lucky if you started the development for a VM and you're in trouble if you did not. A commercial company would have even more troubles with reusing available stuff.
+        </p>
+    </li>
+    <li>
+        <p>"Write once - run everywhere"</p>
+        <p>
+        It's quite cool to compile program only once and to be able to execute it on different platforms. But the question here is whether testing can be avoided on several target platforms. For example, a company could decide that AIX is too expensive to buy and testing on that platform is not necessary. In ideal world, the company made right decision, in real - it will fail! Even UI will not look the same on different problems. And who knows how much issues with program execution can happen on a different platform?
+        </p>
+        <p>
+        One can argue that recompilation on different platforms can be enormously hard. Yes, I agree but the problem is not the recompilation itself. The source of a platform are development tools (like different c/c++ compilers, different build systems, etc.).
+        </p>
+    </li>
+    <li>
+        <p>Modern computers have a lot of spare time - it can be spent for garbage collection and/or JIT compilation</p>
+        <p>
+        Heh, yes, computers waste a lot of CPU cycles. But why the hell they try to spend those CPU cycles on garbage collection and/or compilation at the same time I try do do something with a program (remember java's "adaptive mark-and-sweep stop-and-copy gc" that makes large java programs so unresponsive?).
+        </p>
+        <p>
+        I'd say that if I have spare CPU cycles, I'd better spend them on interpreting the program (like python interpreter does) and not on trying to do the "background" magic. Real world proves that the later approach which in theory is slower turns out to be much faster (compare Java/SWT programs to Python/GTK or Python/Qt).
+        </p>
+        <p>
+        Bear in mind also that python interpreter uses GC with reference counting which should be "much slower".
+        </p>
+    </li>
+    <li>
+        <p>It's easier to write programs for VM</p>
+        <p>
+        Huh? It's easier to write programs in java and/or c# but that has nothing to do with a VM. Don't remember that GCJ compiler exists to compile java code into native executables. Similar compiler for c# can be implemented as well.
+        </p>
+    </li>
+    <li>
+        <p>VM allows reflection</p>
+        <p>
+        Ok, two questions. How often reflection is used? And isn't reflection available with interpreted languages? My answers are: "rare" and "yes". If you need reflection, use interpreted languages, they can do it easier. Most problems can be solved using some kind of "eval" statement (in ruby, for example, you can even add/modify class definitions using "eval").
+        </p>
+    </li>
+    <li>
+        <p>It's easy to distribute programs for VM</p>
+        <p>
+        Ok, now I'm bailing out. This is not a myth - it's a reality. For example, java web start (JNLP) has always attracted me a lot. It's also easy to write and distribute plugins for applications. Anyways, with interpreted languages you can do the same thing and VM is not necessary. And let's consider for a minute troubles with distribution of native-compiled programs for Windows. Most of them are connected to the distribution of dll's which have no versioning information.
+        </p>
+        <p>
+        But besides that it's relatively easy to distribute compiled plugins for applications. On UNIX distribution of binaries was always a problem mostly due to binary incompatible libc/etc in dozens of distributions.
+        </p>
+    </li>
+</ol>
+<p>
+PS: As a postscript I will raise one question. Can aforementioned "good things" be said about a development platform with a compiled language?
+</p>
+<p>
+And here my answers:
+</p>
+<ol>
+    <li>
+        <p>Programs written for VM are easily portable</p>
+        <p>
+        "Write once - compile everywhere" <i>can</i> be achieved. There's no technical problem with that. It's a question of development tools - a compiler, standard library and build system.
+        </p>
+    </li>
+    <li>
+        <p>"Write once - run everywhere"</p>
+        <p>
+        "Write once - compile everywhere" can be considered as the same. Testing is always necessary so if a compilation can be made easier and straightforward then those statements become equal.
+        </p>
+    </li>
+    <li>
+        <p>Modern computers have a lot of spare time - it can be spent for garbage collection and/or JIT compilation</p>
+        <p>
+        There's no problem in having GC in compiled language. GC with reference counting can be used to avoid stops during program execution. The program will be slower (due to reference counting) but the overall program flow would be perceived as more "natural". For example, everybody knows that python programs are slow - each test shows their slowness, but at the same time python programs do not <i>feel</i> slow. They run <i>smoothly</i>.
+        </p>
+    </li>
+    <li>
+        <p>It's easier to write programs for VM</p>
+        <p>
+        For any modern language (java, c#, etc.) a native compiler can be created. If java/c# are not so good, it's always possible to create a better language&nbsp;;)
+        </p>
+    </li>
+    <li>
+        <p>VM allows reflection</p>
+        <p>
+        Interpreter for a language can be created among with native compiler. Developers who need reflection could make use of such interpreter. Or vise versa, a compiler for an interpreted language can be created. The only technical problem to solve here is to allow easy interaction between interpreted and compiled code.
+        </p>
+    </li>
+    <li>
+        <p>It's easy to distribute programs for VM</p>
+        <p>
+        If BC is kept for the development platform then it is always possible to distribute binaries and plugins in binary form. A number of rules exists (see, for example, "parallel installation" document for GTK) to ensure the libraries do not clash and old programs can be run on newer platforms. It's just a matter of installing old and new binaries in parallel. Exactly the same thing should be done with VMs. Different versions of VMs can be incompatible so parallel installation is a must.
+        </p>
+    </li>
+</ol>
