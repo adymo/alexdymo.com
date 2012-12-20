@@ -4,7 +4,7 @@ layout: nil
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>Alexander Dymo</title>
-    <link href="http://www.alexdymo.com/feed/" rel="self"/>
+    <link href="http://www.alexdymo.com/blog/feed/" rel="self"/>
     <link href="http://www.alexdymo.com/"/>
     <updated>{{ site.time | date_to_xmlschema }}</updated>
     <id>http://www.alexdymo.com/</id>
