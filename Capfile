@@ -3,11 +3,11 @@ load 'deploy'
 role :web, "alexdymo.com"
 
 set :application, "alexdymo.com"
-set :deploy_to, "/srv/www/alexdymo.com"
-set :deploy_via, :copy
-set :copy_compression, :bzip2
+set :deploy_to, "/home/gremlin/alexdymo.com"
+set :deploy_via, :copy_with_remote_cache
 
-set :repository,  "./_site"
+
+set :repository, File.join(File.expand_path(File.dirname(__FILE__)), '_site')
 set :scm, :none
 
 namespace :deploy do
