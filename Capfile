@@ -5,7 +5,7 @@ role :web, "alexdymo.com"
 set :keep_releases, 3
 
 set :application, "alexdymo.com"
-set :deploy_to, "/home/gremlin/alexdymo.com"
+set :deploy_to, "/srv/www/alexdymo.com"
 set :deploy_via, :copy_with_remote_cache
 
 set :repository, File.join(File.expand_path(File.dirname(__FILE__)), '_site')
