@@ -51,7 +51,7 @@
                         </a>
                     </td>
                     <td style="text-align: right;">
-                        <a class="header-link small-caps {% if page.header == "Resume" %} current-header-link {% endif %}" href="/employment.html">
+                        <a class="header-link small-caps {% if page.header == "Resume" %} current-header-link {% endif %}" href="/resume.html">
                             Resume
                         </a>
                     </td>
@@ -60,7 +60,7 @@
             </div>
             <div class="header-text">
                 <a class="clickable-header" href="/">Alexander Dymo</a>
-                {% if page.header %}
+                {% if page.header and page.header != "Home" %}
                      &ndash;&#8250;
                      {% if page.title and page.header == "Blog" %}<a class="clickable-header" href="/blog">{% endif %}
                      {{ page.header }}
@@ -115,7 +115,7 @@
                 <img src="/face.png" width="180px"/>
             </div>
             <p class="opening small">
-            Entrepreneur, open source developer, passionate about programming and engineering. Hardcore Linuxoid.
+            Entrepreneur, free software developer, passionate about programming and engineering. Hardcore Linuxoid.
             </p>
             <p class="small">
                 Contact me by email:<br/>
