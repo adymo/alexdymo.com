@@ -105,6 +105,11 @@ blockquote:after {
     content: '”';
 }
 
+img {
+    /* IE shows border by default. Override that. */
+    border: none;
+}
+
 pre {
     margin: 24px 0;
 }
