@@ -3,17 +3,38 @@ layout: default
 header: Home
 description: "Entrepreneur, Y Combinator alum, free software developer, passionate about programming and engineering, hardcore Linuxoid."
 ---
-<h1>Entrepreneur</h1>
 <p>
-I enjoy the startup scene since the beginning of my professional career. I've helped build two successful startups from the beginning. I&nbsp;was CTO of <a href="http://ki-inform.com" target="_blank">Ki-Inform</a>, Ukrainian startup focused on business development services. Now I'm a Director of Engineering in <a href="http://www.acunote.com" target="_blank">Acunote</a>, US startup making the online project management and Scrum software that lets companies manage developers and other workers in a data driven way.
+I'm Alexander Dymo - entrepreneur, Y Combinator alum, free software developer, passionate about programming and engineering, hardcore Linuxoid. To learn more about me, <a href="/resume.html">see my resume</a>.
 </p>
 
-<h1>Free Software Developer</h1>
-<p>
-Free software has been my passion since 2002 when I started contributing to <a href="http://www.kde.org" target="_blank">KDE</a>. Now I work on <a href="http://www.kdevelop.org" target="_blank">KDevelop IDE</a> and my <a href="http://github.com/adymo" target="_blank">own open source projects</a>. I also mentor Google Summer of Code projects. Occasionally I contribute to Rails, Ruby, Digikam and other projects. I&nbsp;regularly attend and present at KDE, Ruby and Postgres conferences.
-</p>
+<h1>Recent Blog Posts</h1>
+{% for post in site.posts limit:3 %}
+    <div style="margin: 24px 0;">
+        <div style="float:left; width: 388px;">
+            <b>{{ post.title }}</b>
+        </div>
+        <div class="small" style="float: left; margin-left: 12px; text-align: right; width: 80px;">
+            {{ post.date | date: "%b %d, %Y" }}
+        </div>
+        <div class="clear"></div>
+        {{ post.content | post_preview | strip_html }}
+            <a href="{{ post.url }}">Read&nbsp;more... &raquo;</a>
+    </div>
+{% endfor %}
 
-<h1>Programmer and Engineer</h1>
+<h1>Most Popular Blog Posts</h1>
 <p>
-I like building my own tools and automating tasks. I like using Linux because it's a system I can understand. I also did scientific research becoming PhD in Operations Management&nbsp;in&nbsp;2007.
+    <a href="/blog/2010/03/ruby-language-support-in-kdevelop4.html">Ruby Language Support in KDevelop4</a><br/>
+    <a href="/blog/2009/01/kde-4-2-review-from-inside-out-part-2-applications.html">KDE 4.2 Review From Inside Out. Part 2: Applications</a><br/>
+    <a href="/blog/2009/01/kde-4-2-review-from-inside-out-part-1.html">KDE 4.2 Review From Inside Out. Part 1</a><br/>
+    <a href="/blog/2007/03/kdevelop4-evolution-the-application-templates.html">KDevelop4 Evolution: The Application Templates</a><br/>
+    <a href="/blog/2007/03/kdevelop4-evolution-the-project-and-buildsystem-management.html">KDevelop4 Evolution: The Project and Buildsystem Management</a><br/>
+    <a href="/blog/2007/02/kdevelop4-evolution-the-ui-part-2.html">KDevelop4 Evolution: The UI, Part 2</a><br/>
+    <a href="/blog/2007/02/kdevelop4-evolution-the-ui.html">KDevelop4 Evolution: The UI</a><br/>
+    <a href="/blog/2006/11/more-choice-is.html">More Choice Is...</a><br/>
+    <a href="/blog/2006/05/ruby-rails-job-parsing-mediawiki.html">Ruby/Rails Job. Parsing Mediawiki</a><br/>
+    <a href="/blog/2005/08/eclipse-hacking-experience.html">Eclipse Hacking Experience</a><br/>
+</p>
+<p>
+<a href="/blog">See all blog posts</a>
 </p>
