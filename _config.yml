@@ -1,7 +1,7 @@
 markdown: rdiscount
 permalink: /blog/:year/:month/:title.html
 pygments: true
-exclude: [alexdymo.com.kdev4, Capfile, resume]
+exclude: [alexdymo.com.kdev4, Capfile, resume, Makefile]
 
 # For local webserver
 auto: true
