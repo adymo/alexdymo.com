@@ -1,7 +1,7 @@
 /*
     Copyright 2012 Alexander Dymo <alex@alexdymo.com>
 */
-.header-navigation, .footer {
+.header-navigation, .footer, .resume-download-link {
     display: none;
 }
 body {
