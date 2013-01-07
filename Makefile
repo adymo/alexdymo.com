@@ -1,8 +1,8 @@
 
-resume: resume.pdf
+resume: alexander-dymo-resume.pdf
 
-resume.pdf: resume.ps
-	ps2pdf resume/resume.ps
+alexander-dymo-resume.pdf: resume.ps
+	ps2pdf resume/resume.ps alexander-dymo-resume.pdf
 
 resume.ps: resume.dvi
 	cd resume &&  dvips resume.dvi
