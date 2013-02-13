@@ -87,7 +87,7 @@
         </div>
         <div class="content">
             {% if page.title and page.header == "Blog" %}
-                <div class="small-caps deemphasized" style="margin: 24px 0 0 0">
+                <div class="small-caps deemphasized post-navigation" style="margin: 24px 0 0 0">
                     <a href="/blog">&laquo; See all posts</a>
                 </div>
             {% endif %}
@@ -102,7 +102,7 @@
             {{ content }}
 
             {% if page.title and page.header == "Blog" %}
-            <table width="100%" class="deemphasized small">
+            <table width="100%" class="deemphasized small post-navigation">
             <tbody>
                 {% if page.next %}
                     <tr>
