@@ -2,6 +2,7 @@
 layout: default
 title: "Как украинскому стартапу попасть в Y Combinator"
 header: Blog
+published: false
 ---
 
 На прошлой неделе Y&nbsp;Combinator (далее по тексту YC) [начал принимать заявки](http://ycombinator.com/apply.html?s2013) на летний цикл 2013-го года. Самое время украинским стартапам начать подавать туда заявки. Я и [мой стартап](http://dou.ua/lenta/interviews/aleksandr-dymo-acunote-interview/) уже были в YC, позвольте мне рассказать зачем и как туда попасть.<!--more-->
