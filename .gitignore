@@ -5,3 +5,4 @@ resume/*.dvi
 resume/*.aux
 resume/*.log
 resume/*.ps
+resume/*.out
