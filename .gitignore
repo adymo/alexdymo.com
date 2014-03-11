@@ -6,3 +6,4 @@ resume/*.aux
 resume/*.log
 resume/*.ps
 resume/*.out
+.bundle
