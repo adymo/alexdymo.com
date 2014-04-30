@@ -1,11 +1,19 @@
-## Alexander Dymo's Personal Website and Blog
+# Alexander Dymo's Personal Website and Blog
 
-Setup:
+## Prepare
 
-* bundle install --path=.bundle/gems
-* install pygments
-* bundle exec jekyll build
+    rbenv local 2.1.1
+    sudo zypper install pygments
+    bundle install --path .bundle/gems
 
-Deploy:
+## Build
 
-* cap deploy
+    bundle exec jekyll build
+
+## Run
+
+    bundle exec jekyll serve -w
+
+## Deploy
+
+    cap deploy
