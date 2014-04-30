@@ -6,4 +6,6 @@ resume/*.aux
 resume/*.log
 resume/*.ps
 resume/*.out
+Gemfile.lock
 .bundle
+.ruby-version
