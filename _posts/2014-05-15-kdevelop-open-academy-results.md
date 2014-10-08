@@ -2,6 +2,7 @@
 layout: default
 title: KDevelop in Facebook Open Academy Results
 header: Blog
+tags: kde
 ---
 
 Open Academy has ended. All my 3 students successfuly completed the program and their assignments. I gave them positive evaluation and I'm looking forward seeing more contributions from them in the future. Here are our results.<!--more-->
