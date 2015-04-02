@@ -7,5 +7,5 @@ gem 'fastimage'
 gem 'rdiscount'
 
 # deploy deps
-gem 'capistrano'
+gem 'capistrano', '~> 2.15'
 gem 'capistrano_copy_with_remote_cache_strategy'
