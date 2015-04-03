@@ -16,4 +16,4 @@
 
 ## Deploy
 
-    cap deploy
+    bundle exec cap deploy
