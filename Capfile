@@ -20,6 +20,9 @@ namespace :deploy do
             cd #{shared_path} &&
             for name in `ls google*`; do ln -nfs #{shared_path}/$name #{release_path}/; done
         CMD
+
+        # ping rubycorner.com
+        run "curl http://rubycorner.com/ping/xmlrpc/dc85371631011ed457f9ad7af7aa1c66e2817a2d"
     end
 end
 
