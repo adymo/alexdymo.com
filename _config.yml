@@ -1,5 +1,5 @@
 markdown: rdiscount
 permalink: /blog/:year/:month/:title.html
-pygments: true
+highlighter: rouge
 exclude: [alexdymo.com.kdev4, Capfile, Makefile, README.md]
 excerpt_separator: ""
