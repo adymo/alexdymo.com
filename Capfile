@@ -22,7 +22,7 @@ namespace :deploy do
         CMD
 
         # ping rubycorner.com
-        run "curl http://rubycorner.com/ping/xmlrpc/dc85371631011ed457f9ad7af7aa1c66e2817a2d"
+        # run "curl http://rubycorner.com/ping/xmlrpc/dc85371631011ed457f9ad7af7aa1c66e2817a2d"
     end
 end
 
