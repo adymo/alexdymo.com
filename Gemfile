@@ -5,6 +5,8 @@ ruby '2.3.0'
 gem 'jekyll'
 gem 'fastimage'
 gem 'rdiscount'
+gem 'kramdown'
+gem 'rouge'
 
 # deploy deps
 gem 'capistrano', '~> 2.15'
